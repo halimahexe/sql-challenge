@@ -13,13 +13,22 @@ function listCohortsInFinsbo() {
 	return select_cohorts_in_finsbo.all();
 }
 
-// const select_students_in_finsbo = db.prepare(/*sql*/ `
-//   -- [2]
-// `);
+const select_students_in_finsbo = db.prepare(/*sql*/ `
+  SELECT
+    username
+  FROM
+    students
+  WHERE cohort_name in (SELECT
+    name
+  FROM
+    cohorts
+  WHERE
+    location = 'Finsbury Park')
+`);
 
-// function listStudentsInFinsbo() {
-// 	return select_students_in_finsbo.all();
-// }
+function listStudentsInFinsbo() {
+	return select_students_in_finsbo.all();
+}
 
 // const select_students_with_location = db.prepare(/*sql*/ `
 //   -- [3]
@@ -47,8 +56,8 @@ function listCohortsInFinsbo() {
 
 module.exports = {
 	listCohortsInFinsbo,
-	/* 	listStudentsInFinsbo,
+	listStudentsInFinsbo /* ,
 	listStudentsWithLocation,
 	listStudentsWithProjects,
-	listStudentsWithProjectsInFinsbo, */
+	listStudentsWithProjectsInFinsbo, */,
 };
